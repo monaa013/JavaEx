@@ -1,70 +1,69 @@
-class Game {
-    // Data members and Access Specifier(Public)
-    private String name;
-    private int year;
-    
-    // Default Constructor
-    public Game() {
-        name = "Minecraft";
-        year = 2000;
-    }
-    
-    // Parameterized Constructor
-    public Game(String name, int year) {
-        this.name = name;
-        this.year = year;
-    }
-    
-    // Method to display game information
-    public void display() {
-        System.out.println("Game Name: " + name);
-        System.out.println("Year Released: " + year);
-    }
-    
-    // Method Overloading with different number of parameters
-    public void play() {
-        System.out.println(name + " is being played.");
-    }
-    
-    public void play(int players) {
-        System.out.println(name + " is being played by " + players + " players.");
-    }
-    
-    // Method Overloading with different types of parameters
-    public void rate(int rating) {
-        System.out.println(name + " has a rating of " + rating);
-    }
-    
-    public void rate(double rating, String comments) {
-        System.out.println(name + " has a rating of " + rating + " with comments: " + comments);
-    }
-    
-    // Method Overloading with the order of parameter of methods
-    public void review(String reviewer, String comments) {
-        System.out.println("Review of " + name + " by " + reviewer + ": " + comments);
-    }
-    
-    public void review(String comments, String reviewer, int rating) {
-        System.out.println("Review of " + name + " by " + reviewer + " with a rating of " + rating + ": " + comments);
+import java.util.*;
+// Abstract class representing a Game
+abstract class Game {
+    protected String title;
+    protected int releaseYear;
+
+    public Game(String title, int releaseYear) {
+        this.title = title;
+        this.releaseYear = releaseYear;
     }
 
-
-
-    public static void main(String[] args) {
-        Game defaultGame = new Game();
-        Game minecraft = new Game("Minecraft", 2011);
-        
-        defaultGame.display();
-        minecraft.display();
-        
-        defaultGame.play();
-        minecraft.play(4);
-        
-        defaultGame.rate(3);
-        minecraft.rate(4.5, "Awesome sandbox game!");
-        
-        defaultGame.review("User123", "Good game, but needs more features.");
-        minecraft.review("A must-play game!", "GameFanatic", 5);
-    }
-
+    public abstract void play();
 }
+
+// PlayStationGame class inheriting from Game
+class PlayStationGame extends Game {
+    private String consoleType;
+
+    public PlayStationGame(String title, int releaseYear, String consoleType) {
+        super(title, releaseYear);
+        this.consoleType = consoleType;
+    }
+
+    @Override
+    public void play() {
+        System.out.println("Playing " + title + " on PlayStation " + consoleType);
+    }
+}
+
+// MultiplayerGame class inheriting from PlayStationGame
+class MultiplayerGame extends PlayStationGame {
+    private int maxPlayers;
+
+    public MultiplayerGame(String title, int releaseYear, String consoleType, int maxPlayers) {
+        super(title, releaseYear, consoleType);
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void displayMaxPlayers() {
+        System.out.println("Max Players: " + maxPlayers);
+    }
+}
+
+// Final class example
+final class FinalGame extends Game {
+    public FinalGame(String title, int releaseYear) {
+        super(title, releaseYear);
+    }
+
+    @Override
+    public void play() {
+        System.out.println("Playing the final version of " + title);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Creating instances and demonstrating functionalities
+        Game game1 = new PlayStationGame("God of War", 2018, "PS4");
+        game1.play();
+
+        Game game2 = new MultiplayerGame("FIFA 22", 2021, "PS5", 4);
+        game2.play();
+
+        Game game3 = new FinalGame("Last of Us Part II", 2020);
+        game3.play();
+    }
+}
+
